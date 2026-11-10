@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tech-Ahorcado</title>
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--tx:#1b2333;--mut:#5d6b85;--ac:#2563eb;--ok:#15803d;--bad:#dc2626;--bd:#d5dbe8;--pre:#0f172a;--pret:#7dd3fc;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1020;--card:#151c30;--tx:#e7ecf8;--mut:#9aa8c7;--ac:#60a5fa;--ok:#4ade80;--bad:#f87171;--bd:#2a3555;--pre:#05080f;--pret:#7dd3fc}}
+:root[data-theme="dark"]{--bg:#0b1020;--card:#151c30;--tx:#e7ecf8;--mut:#9aa8c7;--ac:#60a5fa;--ok:#4ade80;--bad:#f87171;--bd:#2a3555;--pre:#05080f;--pret:#7dd3fc}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:720px;margin:0 auto;padding:14px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:12px}
+h1{font:700 1.25rem/1.2 ui-monospace,Menlo,Consolas,monospace;text-align:center;margin:0 0 4px}
+.sub{text-align:center;color:var(--mut);font-size:.9rem;margin:0}
+pre{background:var(--pre);color:var(--pret);border-radius:10px;padding:10px;margin:0;font:15px/1.15 ui-monospace,Menlo,Consolas,monospace;overflow-x:auto}
+.word{font:700 1.7rem/1.3 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.25em;text-align:center;word-break:break-word;margin:10px 0}
+.row{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+td,th{border:1px solid var(--bd);padding:5px 8px;text-align:left}
+th{background:var(--bg)}
+.wrap{overflow-x:auto}
+button{font:inherit;color:var(--tx);background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:8px 12px;cursor:pointer}
+button:hover:not(:disabled){border-color:var(--ac)}
+button:disabled{opacity:.4;cursor:not-allowed}
+.pri{background:var(--ac);color:#fff;border-color:var(--ac)}
+.kb{display:grid;grid-template-columns:repeat(9,1fr);gap:5px;margin:10px 0}
+.kb button{padding:8px 0;font-weight:700;font-family:ui-monospace,monospace}
+.kb .ok{background:var(--ok);color:#fff;border-color:var(--ok)}
+.kb .no{background:var(--bad);color:#fff;border-color:var(--bad)}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+.log{color:var(--mut);font-size:.92rem;min-height:1.4em}
+.def{background:var(--bg);border:2px solid var(--ac);border-left-width:8px;border-radius:10px;padding:10px 12px;margin:10px 0;font-size:1.05rem}
+.timer{font-weight:700;font-variant-numeric:tabular-nums}
+.timer.low{color:var(--bad)}
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.b{border:1px solid var(--bd);border-radius:10px;padding:8px;font-size:.85rem}
+.b.on{border-color:var(--ok)}.b.off{opacity:.5}
+.b strong{display:block}
+.turn{text-align:center;font-weight:700;margin-bottom:6px}
+.menu button{display:block;width:100%;text-align:left;margin-bottom:8px;padding:12px}
+@media (max-width:480px){.row{grid-template-columns:1fr}.kb{grid-template-columns:repeat(7,1fr)}}
+</style>
+</head>
+<body>
+<main>
+<div class="card"><h1>💻 TECH-AHORCADO 🤖</h1><p class="sub">Código · Ciberseguridad · Inteligencia Artificial</p></div>
+<div id="app"></div>
+</main>
+<script>
+var LV=[{n:"Novato del Código",e:"🟢",w:[{w:"HARDWARE",d:"Partes físicas de un computador: lo que puedes tocar."},{w:"BUG",d:"Error en un programa que provoca fallos inesperados."},{w:"PIXEL",d:"Punto mínimo que forma una imagen en pantalla."}]},
+{n:"Hacker Ético",e:"🟡",w:[{w:"FIREWALL",d:"Cortafuegos que filtra el tráfico de una red."},{w:"ENCRIPCION",d:"Convertir datos en un código ilegible sin la clave."},{w:"PHISHING",d:"Engaño por mensaje o correo para robar datos."}]},
+{n:"Arquitecto de IA",e:"🔴",w:[{w:"PROMPT",d:"Instrucción o texto que le das a una IA."},{w:"RED NEURONAL",d:"Modelo inspirado en el cerebro, hecho de capas de nodos."},{w:"MACHINE LEARNING",d:"Aprendizaje automático: sistemas que aprenden de datos."}]}];
+var BD=[{id:"vel",e:"⚡",n:"Velocista Tech",d:"Acertar una letra en menos de 10 s"},{id:"dep",e:"🐞",n:"Depurador Supremo",d:"Ganar una palabra sin errores"},{id:"est",e:"🧠",n:"Estratega",d:"Ganar un nivel sin usar pistas"},{id:"rac",e:"🔥",n:"Racha de Compilación",d:"Ganar 3 palabras seguidas"},{id:"hac",e:"🛡️",n:"Hacker Ético Certificado",d:"Completar el Nivel 2"},{id:"arq",e:"🤖",n:"Arquitecto de IA",d:"Completar el Nivel 3"},{id:"sup",e:"🏅",n:"Superviviente",d:"Ganar con solo 1 intento restante"},{id:"mae",e:"👑",n:"Maestro Tech",d:"Conseguir las 7 insignias anteriores"}];
+var ST=[["   ┌───┐","   │   │","       │","       │","       │","       │"," ══════╧══"],
+["   ┌───┐","   │   │","   O   │","       │","       │","       │"," ══════╧══"],
+["   ┌───┐","   │   │","   O   │","   │   │","       │","       │"," ══════╧══"],
+["   ┌───┐","   │   │","   O   │","  /│   │","       │","       │"," ══════╧══"],
+["   ┌───┐","   │   │","   O   │","  /│\\  │","       │","       │"," ══════╧══"],
+["   ┌───┐","   │   │","   O   │","  /│\\  │","  /    │","       │"," ══════╧══"],
+["   ┌───┐","   │   │","   O   │","  /│\\  │","  / \\  │","       │"," ══════╧══"]];
+var LET="ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+var G={},app=document.getElementById("app"),tick=null;
+
+function menu(){
+ clearInterval(tick);
+ var h='<div class="card menu"><h2 style="margin-top:0">🎮 ¿En qué modo quieres jugar?</h2>'+
+ '<button class="pri" onclick="start(\'solo\')">1️⃣ Individual — progreso por 3 niveles</button>'+
+ '<button onclick="start(\'vs\')">2️⃣ Multijugador VS — 2 jugadores compiten por puntos</button>'+
+ '<button onclick="start(\'coop\')">🤝 Multijugador Cooperativo — 2 jugadores adivinan juntos</button></div>'+
+ '<div class="card"><strong>📜 Reglas</strong><div class="wrap"><table><tr><td>❤️ Errores</td><td>6 por palabra</td></tr><tr><td>⏱️ Tiempo</td><td>30 s por turno; si se acaba, pierdes un intento</td></tr><tr><td>💡 Pistas</td><td>2 por nivel (revelar una vocal), −15 pts cada una. La definición siempre está visible</td></tr><tr><td>🏆 Puntos</td><td>100 − 10 por error − 15 por pista</td></tr></table></div></div>'+
+ '<div class="card"><strong>🎖️ Catálogo de insignias</strong><div class="badges" style="margin-top:8px">'+BD.map(function(b){return '<div class="b off"><strong>'+b.e+' '+b.n+'</strong>'+b.d+'</div>'}).join("")+'</div></div>';
+ app.innerHTML=h;
+}
+function start(m){
+ G={m:m,lv:0,wi:0,total:0,sc:[0,0],p:0,streak:0,bd:{},hl:2,lvHints:0,log:"",ph:"play"};
+ load();
+}
+function load(){
+ var o=LV[G.lv].w[G.wi];
+ G.w=o.w;G.d=o.d;G.g={};G.err=0;G.wh=0;G.showD=false;G.ph="play";G.ts=Date.now();G.over=false;
+ G.g[" "]=1;
+ loop();render();
+}
+function loop(){clearInterval(tick);tick=setInterval(function(){
+ if(G.ph!=="play")return;
+ var r=30-(Date.now()-G.ts)/1000;
+ if(r<=0){timeout();return}
+ var t=document.getElementById("tm");
+ if(t){t.textContent=Math.ceil(r)+" s";t.className="timer"+(r<=10?" low":"")}
+},250)}
+function unlock(id){
+ if(G.bd[id])return;
+ G.bd[id]=1;var b=BD.filter(function(x){return x.id===id})[0];
+ G.log+=" 🎖️ ¡Insignia desbloqueada: "+b.e+" "+b.n+"!";
+ var all=["vel","dep","est","rac","hac","arq","sup"].every(function(k){return G.bd[k]});
+ if(all&&!G.bd.mae){G.bd.mae=1;G.log+=" 🎖️ ¡Insignia desbloqueada: 👑 Maestro Tech!"}
+}
+function solved(){return G.w.split("").every(function(c){return G.g[c]})}
+function pName(){return G.m==="solo"?"":("Jugador "+(G.p+1))}
+function next(){if(G.m!=="solo")G.p=1-G.p;G.ts=Date.now()}
+function guess(c){
+ if(G.ph!=="play"||G.g[c])return;
+ var el=(Date.now()-G.ts)/1000;G.g[c]=1;
+ if(G.w.indexOf(c)>=0){
+  var n=G.w.split(c).length-1;
+  G.log="✅ "+(G.m==="solo"?"":pName()+": ")+"¡Bien! La "+c+" aparece "+n+(n>1?" veces.":" vez.");
+  if(G.m==="vs")G.sc[G.p]+=10*n;
+  if(el<10)unlock("vel");
+ }else{G.err++;G.log="❌ "+(G.m==="solo"?"":pName()+": ")+"La "+c+" no está en la palabra."}
+ after();
+}
+function timeout(){
+ if(G.ph!=="play")return;
+ G.err++;G.log="⏱️ ¡Se acabó el tiempo! Pierdes un intento.";after();
+}
+function after(){
+ if(solved()){return win()}
+ if(G.err>=6){return lose()}
+ next();render();
+}
+function win(){
+ var pts=Math.max(0,100-10*G.err-15*G.wh);
+ G.total+=pts;G.streak++;
+ if(G.m==="vs")G.sc[G.p]+=30;
+ G.log+=" 🎉 ¡Palabra resuelta! +"+pts+" pts.";
+ if(G.err===0)unlock("dep");
+ if(G.err===5)unlock("sup");
+ if(G.streak>=3)unlock("rac");
+ G.ph="won";
+ var last=G.wi===2;
+ if(last){
+  if(G.lvHints===0)unlock("est");
+  if(G.lv===1)unlock("hac");
+  if(G.lv===2)unlock("arq");
+ }
+ render();
+}
+function lose(){G.ph="lost";G.streak=0;G.log+=" 💀 El monigote se completó. La palabra era "+G.w+".";render()}
+function adv(){
+ if(G.wi<2){G.wi++}
+ else if(G.lv<2){G.lv++;G.wi=0;G.hl=2;G.lvHints=0}
+ else{G.ph="end";clearInterval(tick);render();return}
+ if(G.m!=="solo")G.p=1-G.p;
+ load();
+}
+function hint(k){
+ if(G.ph!=="play"||G.hl<=0)return;
+ if(k==="d"){if(G.showD)return;G.showD=true}
+ else{
+  var v="AEIOU".split("").filter(function(x){return G.w.indexOf(x)>=0&&!G.g[x]});
+  if(!v.length){G.log="No quedan vocales por revelar.";render();return}
+  var x=v[Math.floor(Math.random()*v.length)];G.g[x]=1;G.log="💡 Vocal revelada: "+x;
+ }
+ G.hl--;G.wh++;G.lvHints++;
+ if(solved())return win();
+ render();
+}
+function wordHtml(){
+ return G.w.split("").map(function(c){return c===" "?"\u00a0\u00a0":(G.g[c]||G.ph==="lost"?c:"_")}).join(" ");
+}
+function badgeHtml(){
+ var n=Object.keys(G.bd).length;
+ return '<div class="card"><strong>🎖️ Inventario ('+n+'/8)</strong><div class="badges" style="margin-top:8px">'+BD.map(function(b){var o=G.bd[b.id];return '<div class="b '+(o?"on":"off")+'"><strong>'+(o?b.e:"🔒")+" "+b.n+'</strong>'+b.d+'</div>'}).join("")+'</div></div>';
+}
+function render(){
+ if(G.ph==="end"){
+  var res="";
+  if(G.m==="vs"){res=G.sc[0]===G.sc[1]?"🤝 ¡Empate!":"🏆 Gana el Jugador "+(G.sc[0]>G.sc[1]?1:2)+"."}
+  app.innerHTML='<div class="card"><h2 style="margin-top:0">🏁 ¡Juego completado!</h2><p>Puntos totales: <strong>'+G.total+'</strong></p>'+(G.m==="vs"?'<p>Marcador VS — J1: '+G.sc[0]+' · J2: '+G.sc[1]+'<br>'+res+'</p>':"")+'<p class="log">'+G.log+'</p><button class="pri" onclick="menu()">🔁 Jugar de nuevo</button></div>'+badgeHtml();
+  return;
+ }
+ var L=LV[G.lv],lives="";
+ for(var i=0;i<6;i++)lives+=i<6-G.err?"❤️":"🖤";
+ var hs="";for(var j=0;j<2;j++)hs+=j<G.hl?"💡":"▫️";
+ var used=Object.keys(G.g).filter(function(x){return x!==" "}).sort().join(" ")||"(ninguna)";
+ var kb=LET.map(function(c){
+  var cls=G.g[c]?(G.w.indexOf(c)>=0?"ok":"no"):"";
+  return '<button class="'+cls+'" '+(G.g[c]||G.ph!=="play"?"disabled":"")+' onclick="guess(\''+c+'\')">'+c+'</button>';
+ }).join("");
+ var turn="";
+ if(G.m!=="solo")turn='<div class="turn">🎯 Turno: '+pName()+(G.m==="coop"?" (cooperativo)":" (VS)")+'</div>';
+ var sc='';
+ if(G.m==="vs")sc='<tr><td>🏆 Marcador</td><td>J1: <strong>'+G.sc[0]+'</strong> · J2: <strong>'+G.sc[1]+'</strong></td></tr>';
+ var ctrl;
+ if(G.ph==="play")ctrl='<div class="acts"><button onclick="hint(\'v\')" '+(G.hl<=0?"disabled":"")+'>💡 Revelar una vocal (−15 pts)</button></div>';
+ else if(G.ph==="won")ctrl='<button class="pri" onclick="adv()">'+(G.wi===2&&G.lv===2?"🏁 Ver resultado":"➡️ Siguiente")+'</button>';
+ else ctrl='<button class="pri" onclick="menu()">🔁 Reiniciar partida</button>';
+ app.innerHTML='<div class="card"><strong>'+L.e+' Nivel '+(G.lv+1)+': '+L.n+'</strong> · Palabra '+(G.wi+1)+' de 3'+turn+'<div class="def">📘 <strong>Pista de la palabra:</strong> '+G.d+'</div>'+
+ '<div class="row" style="margin-top:8px"><pre>'+ST[G.err].join("\n")+'</pre><div><div class="word">'+wordHtml()+'</div><div class="sub">('+G.w.replace(/ /g,"").length+' letras)</div></div></div>'+
+ '<div class="kb">'+kb+'</div>'+ctrl+
+ 
+ '<p class="log">'+G.log+'</p></div>'+
+ '<div class="card wrap"><table><tr><th>Estado</th><th>Valor</th></tr>'+
+ '<tr><td>❤️ Errores restantes</td><td>'+lives+' ('+(6-G.err)+'/6)</td></tr>'+
+ '<tr><td>💡 Pistas del nivel</td><td>'+hs+' ('+G.hl+'/2)</td></tr>'+
+ '<tr><td>⏱️ Tiempo</td><td><span id="tm" class="timer">30 s</span></td></tr>'+
+ '<tr><td>🔤 Letras usadas</td><td>'+used+'</td></tr>'+
+ '<tr><td>⭐ Puntos totales</td><td>'+G.total+'</td></tr>'+sc+'</table></div>'+badgeHtml();
+}
+document.addEventListener("keydown",function(e){
+ if(!G.ph||e.ctrlKey||e.metaKey||e.altKey)return;
+ var k=(e.key||"").toUpperCase();
+ if(k.length===1&&k>="A"&&k<="Z")guess(k);
+});
+menu();
+</script>
+</body>
+</html>
